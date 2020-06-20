@@ -1,0 +1,54 @@
+{
+  "name": "sequelize-use-cache",
+  "version": "1.0.0",
+  "description": "caching sequelize result using redis",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "npm test && babel src --out-dir lib --verbose",
+    "lint": "eslint src",
+    "jest": "jest .",
+    "test": "npm run lint && npm run jest"
+  },
+  "author": "KimDongMin",
+  "license": "MIT",
+  "jest": {
+    "verbose": true,
+    "roots": [
+      "<rootDir>/__test__"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/haracejacob/sequelize-use-cache.git"
+  },
+  "engines": {
+    "node": ">=8.0"
+  },
+  "keywords": [
+    "sequelize",
+    "db",
+    "orm",
+    "redis",
+    "cache",
+    "sql",
+    "query",
+    "mysql",
+    "postgres",
+    "mariadb",
+    "sqlite"
+  ],
+  "dependencies": {
+    "lodash.clonedeep": "^4.5.0",
+    "sequelize": "^5.21.13"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.1",
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.10.2",
+    "eslint": "^7.2.0",
+    "eslint-plugin-jest": "^23.13.2",
+    "jest": "^26.0.1",
+    "redis": "^3.0.2",
+    "sqlite3": "^4.2.0"
+  }
+}
