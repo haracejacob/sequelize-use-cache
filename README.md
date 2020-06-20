@@ -24,7 +24,7 @@ model.findOne({
 ```js
 import Sequelize from 'sequelize'
 import Redis from 'redis'
-import useCache from 'sequelize-use-cache
+import useCache from 'sequelize-use-cache'
 
 const redis = Redis.createClient()
 const sequelize = new Sequelize()
