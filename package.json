@@ -1,6 +1,6 @@
 {
   "name": "sequelize-use-cache",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "caching sequelize result using redis",
   "main": "lib/index.js",
   "scripts": {
