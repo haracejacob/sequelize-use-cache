@@ -9,7 +9,7 @@
     "jest": "jest .",
     "test": "npm run lint && npm run jest"
   },
-  "author": "KimDongMin",
+  "author": "KimDongMin <dkrahd12@gmail.com> (https://github.com/haracejacob)",
   "license": "MIT",
   "jest": {
     "verbose": true,
