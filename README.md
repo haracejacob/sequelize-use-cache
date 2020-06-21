@@ -1,6 +1,8 @@
 # Sequelize-Use-Cache
 caching sequelize result using redis
 
+https://www.npmjs.com/package/sequelize-use-cache
+
 ## Installation
 ```command
 npm install --save redis # prerequisite
@@ -8,7 +10,8 @@ npm install --save sequelize-use-cache
 ```
 
 ## Usage
-`Usable methods: findOne, findAll, count, max, min, sum, findByPk, findAndCountAll`
+### Usable methods
+findOne, findAll, count, max, min, sum, findByPk, findAndCountAll
 
 ### parameter
 ```js
