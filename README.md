@@ -11,7 +11,7 @@ npm install --save sequelize-use-cache
 
 ## Usage
 ### Usable methods
-findOne, findAll, count, max, min, sum, findByPk, findAndCountAll
+All select queries
 
 ### parameter
 ```js
@@ -46,13 +46,13 @@ projects.findAll({
   cache: true,
   expire: 5,
 })
-console.log(projects.cacheHit) // false
+console.log(sequelize.cacheHit) // false
 
 projects.findAll({
   cache: true,
   expire: 5,
 })
-console.log(projects.cacheHit) // true
+console.log(sequelize.cacheHit) // true
 ```
 
 ## License

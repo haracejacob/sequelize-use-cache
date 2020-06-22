@@ -88,7 +88,7 @@ describe('Integration test', () => {
           title: 'bar',
         },
       })
-      expect(projects.cacheHit).toEqual(undefined)
+      expect(sequelize.cacheHit).toEqual(undefined)
     })
 
     test('findAll', async () => {
@@ -101,7 +101,7 @@ describe('Integration test', () => {
         cache: true,
         expire: 5,
       })
-      expect(projects.cacheHit).toEqual(false)
+      expect(sequelize.cacheHit).toEqual(false)
 
       await projects.findAll({
         where: {
@@ -110,7 +110,7 @@ describe('Integration test', () => {
         cache: true,
         expire: 5,
       })
-      expect(projects.cacheHit).toEqual(true)
+      expect(sequelize.cacheHit).toEqual(true)
     })
 
     test('findOne(with raw)', async () => {
@@ -124,7 +124,7 @@ describe('Integration test', () => {
         cache: true,
         expire: 5,
       })
-      expect(projects.cacheHit).toEqual(false)
+      expect(sequelize.cacheHit).toEqual(false)
 
       await projects.findOne({
         where: {
@@ -134,64 +134,7 @@ describe('Integration test', () => {
         cache: true,
         expire: 5,
       })
-      expect(projects.cacheHit).toEqual(true)
-    })
-
-    test('min', async () => {
-      const { projects } = sequelize.models
-
-      const fromDB = await projects.min('id', {
-        cache: true,
-        expire: 5,
-      })
-      expect(projects.cacheHit).toEqual(false)
-
-      const fromCache = await projects.min('id', {
-        cache: true,
-        expire: 5,
-      })
-
-      expect(fromDB).toEqual(fromCache)
-      expect(fromCache).toEqual(1)
-      expect(projects.cacheHit).toEqual(true)
-    })
-
-    test('max', async () => {
-      const { projects } = sequelize.models
-
-      const fromDB = await projects.max('id', {
-        cache: true,
-        expire: 5,
-      })
-      expect(projects.cacheHit).toEqual(false)
-
-      const fromCache = await projects.max('id', {
-        cache: true,
-        expire: 5,
-      })
-
-      expect(fromDB).toEqual(fromCache)
-      expect(fromCache).toEqual(2)
-      expect(projects.cacheHit).toEqual(true)
-    })
-
-    test('sum', async () => {
-      const { projects } = sequelize.models
-
-      const fromDB = await projects.sum('id', {
-        cache: true,
-        expire: 5,
-      })
-      expect(projects.cacheHit).toEqual(false)
-
-      const fromCache = await projects.sum('id', {
-        cache: true,
-        expire: 5,
-      })
-
-      expect(fromDB).toEqual(fromCache)
-      expect(fromCache).toEqual(3)
-      expect(projects.cacheHit).toEqual(true)
+      expect(sequelize.cacheHit).toEqual(true)
     })
 
     test('count', async () => {
@@ -201,7 +144,7 @@ describe('Integration test', () => {
         cache: true,
         expire: 5,
       })
-      expect(projects.cacheHit).toEqual(false)
+      expect(sequelize.cacheHit).toEqual(false)
 
       const fromCache = await projects.count({
         cache: true,
@@ -210,7 +153,64 @@ describe('Integration test', () => {
 
       expect(fromDB).toEqual(fromCache)
       expect(fromCache).toEqual(2)
-      expect(projects.cacheHit).toEqual(true)
+      expect(sequelize.cacheHit).toEqual(true)
+    })
+
+    test('min', async () => {
+      const { projects } = sequelize.models
+
+      const fromDB = await projects.min('id', {
+        cache: true,
+        expire: 5,
+      })
+      expect(sequelize.cacheHit).toEqual(false)
+
+      const fromCache = await projects.min('id', {
+        cache: true,
+        expire: 5,
+      })
+
+      expect(fromDB).toEqual(fromCache)
+      expect(fromCache).toEqual(1)
+      expect(sequelize.cacheHit).toEqual(true)
+    })
+
+    test('max', async () => {
+      const { projects } = sequelize.models
+
+      const fromDB = await projects.max('id', {
+        cache: true,
+        expire: 5,
+      })
+      expect(sequelize.cacheHit).toEqual(false)
+
+      const fromCache = await projects.max('id', {
+        cache: true,
+        expire: 5,
+      })
+
+      expect(fromDB).toEqual(fromCache)
+      expect(fromCache).toEqual(2)
+      expect(sequelize.cacheHit).toEqual(true)
+    })
+
+    test('sum', async () => {
+      const { projects } = sequelize.models
+
+      const fromDB = await projects.sum('id', {
+        cache: true,
+        expire: 5,
+      })
+      expect(sequelize.cacheHit).toEqual(false)
+
+      const fromCache = await projects.sum('id', {
+        cache: true,
+        expire: 5,
+      })
+
+      expect(fromDB).toEqual(fromCache)
+      expect(fromCache).toEqual(3)
+      expect(sequelize.cacheHit).toEqual(true)
     })
   })
   describe('with include', () => {
@@ -227,7 +227,7 @@ describe('Integration test', () => {
         cache: true,
         expire: 5,
       })
-      expect(users.cacheHit).toEqual(false)
+      expect(sequelize.cacheHit).toEqual(false)
 
 
       await users.findOne({
@@ -241,7 +241,7 @@ describe('Integration test', () => {
         expire: 5,
       })
 
-      expect(users.cacheHit).toEqual(true)
+      expect(sequelize.cacheHit).toEqual(true)
     })
 
     test('with include(with raw)', async () => {
@@ -258,7 +258,7 @@ describe('Integration test', () => {
         cache: true,
         expire: 5,
       })
-      expect(users.cacheHit).toEqual(false)
+      expect(sequelize.cacheHit).toEqual(false)
 
       await users.findAll({
         where: {
@@ -271,7 +271,33 @@ describe('Integration test', () => {
         cache: true,
         expire: 5,
       })
-      expect(users.cacheHit).toEqual(true)
+      expect(sequelize.cacheHit).toEqual(true)
+    })
+  })
+
+  describe('with attributes', () => {
+    test('with attributes', async () => {
+      const { projects } = sequelize.models
+
+      await projects.findAll({
+        attributes: {
+          exclude: ['id'],
+        },
+        cache: true,
+        expire: 5
+      })
+
+      expect(sequelize.cacheHit).toEqual(false)
+
+      await projects.findAll({
+        attributes: {
+          exclude: ['id'],
+        },
+        cache: true,
+        expire: 5
+      })
+
+      expect(sequelize.cacheHit).toEqual(true)
     })
   })
 })
