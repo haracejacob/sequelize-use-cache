@@ -8,12 +8,12 @@ export default function useCache (sequelize, redis) {
   const SELECT = 'SELECT'
   const originalQueryMethod = sequelize.query.bind(sequelize)
 
-  const getFromCache = async (key, model, { raw }) => {
+  const getFromCache = async (key, { model, raw }) => {
     const res = await asyncRedisGet(key)
     if (res) {
       const data = JSON.parse(res)
 
-      if (typeof data !== 'object' || raw) {
+      if (typeof data !== 'object' || !model || raw) {
         return data
       }
 
@@ -47,7 +47,10 @@ export default function useCache (sequelize, redis) {
   }
 
   const keyPrefix = 'sequelize-use-cache'
-  const generateKey = (sql, model) => {
+  const generateKey = (sql, { model, replacements }) => {
+    if (replacements) {
+      sql = `${sql}${JSON.stringify(replacements)}`
+    }
 
     const tableName = model && model.tableName || ''
     const hash = crypto
@@ -59,11 +62,9 @@ export default function useCache (sequelize, redis) {
   }
 
   const fetchFromCache = async (sql, options) => {
-    const { model } = options
+    const key = generateKey(sql, options)
 
-    const key = generateKey(sql, model)
-
-    const res = await getFromCache(key, model, options)
+    const res = await getFromCache(key, options)
     if (res) {
       sequelize.cacheHit = true
       return res
