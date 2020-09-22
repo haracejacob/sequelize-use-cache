@@ -300,4 +300,48 @@ describe('Integration test', () => {
       expect(sequelize.cacheHit).toEqual(true)
     })
   })
+
+  describe('with replacements', () => {
+    test('with replacements', async () => {
+      const query = `
+        SELECT
+          count(1)
+        FROM projects
+        WHERE title = :title
+      `
+      const fromDB = await sequelize.query(query, {
+        type: sequelize.QueryTypes.SELECT,
+        replacements: {
+          title: 'foo',
+        },
+        cache: true,
+        expire: 5,
+      })
+
+      expect(sequelize.cacheHit).toEqual(false)
+
+      const fromCache = await sequelize.query(query, {
+        type: sequelize.QueryTypes.SELECT,
+        replacements: {
+          title: 'foo',
+        },
+        cache: true,
+        expire: 5,
+      })
+
+      expect(sequelize.cacheHit).toEqual(true)
+      expect(fromDB).toEqual(fromCache)
+
+      await sequelize.query(query, {
+        type: sequelize.QueryTypes.SELECT,
+        replacements: {
+          title: 'bar',
+        },
+        cache: true,
+        expire: 5,
+      })
+
+      expect(sequelize.cacheHit).toEqual(false)
+    })
+  })
 })
