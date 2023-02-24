@@ -50,7 +50,7 @@
     "eslint-plugin-jest": "^23.13.2",
     "jest": "^26.0.1",
     "redis": "^3.0.2",
-    "sequelize": "^5.21.13",
+    "sequelize": "^6.29.0",
     "sqlite3": "^4.2.0"
   }
 }
